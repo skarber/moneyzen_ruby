@@ -1,0 +1,56 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @credit.email %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @credit.amount %>
+</p>
+
+<p>
+  <strong>Term:</strong>
+  <%= @credit.term %>
+</p>
+
+<p>
+  <strong>Payment:</strong>
+  <%= @credit.payment %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @credit.status %>
+</p>
+
+<%= link_to 'Edit', edit_credit_path(@credit) %> |
+<%= link_to 'Back', credits_path %>
+
+<table class="features-table">
+  <thead>
+    <tr>
+      <th>Month</th>
+      <th>Payment</th>
+      <th>Recidue</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%recidue = @credit.amount.to_f %>
+	<%m=0.01%>
+    <% 1.upto(@credit.term.to_i) do |n|%>
+	<%if n == @credit.term.to_i%>
+	<%m = 0%>
+	<%end%>
+    <%payment = recidue / (@credit.term.to_i - n + 1) + m %>
+	<%recidue = recidue - payment %>
+      <tr>
+        <td><%= @credit.created_at.months_since(n).strftime("%Y-%m") %></td>
+        <td><%= payment.round(2) %></td>
+        <td><%= recidue.round(2) %></td>
+      </tr>
+	  <%end%>
+  </tbody>
+</table>
